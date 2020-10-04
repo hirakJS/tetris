@@ -23,14 +23,21 @@ const moves = {
 };
 
 document.addEventListener('keydown', event => {
-    // Get new state of piece
-    let p = moves[event.keyCode](board.piece);
 
-    board.piece.move(p);
+    if (moves[event.keyCode]) {
+        event.preventDefault();
 
-    document.querySelector('#info').innerHTML = `x: ${board.piece.x}, y: ${board.piece.y}`;
+        // Get new state of piece
+        let p = moves[event.keyCode](board.piece);
 
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        if (board.isValidMove(p)) {
+            board.piece.move(p);
 
-    board.piece.draw();
+            document.querySelector('#info').innerHTML = `x: ${board.piece.x}, y: ${board.piece.y}`;
+
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            board.piece.draw();
+        }
+    }
 });
